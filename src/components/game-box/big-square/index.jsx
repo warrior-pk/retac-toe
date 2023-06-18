@@ -78,22 +78,19 @@ export default function BigSquare(props) {
         onClick={() => handleClick(index)}
         value={state[index]}
         gameOverClass={gameOverClass}
+        className={"sq"}
       />
     );
   }
   return (
-    <div className="big-square">
-      <div className="row one">
+    <div className="container">
+      <div className="big-square">
         {renderSquare(0)}
         {renderSquare(1)}
         {renderSquare(2)}
-      </div>
-      <div className="row two">
         {renderSquare(3)}
         {renderSquare(4)}
         {renderSquare(5)}
-      </div>
-      <div className="row three">
         {renderSquare(6)}
         {renderSquare(7)}
         {renderSquare(8)}
