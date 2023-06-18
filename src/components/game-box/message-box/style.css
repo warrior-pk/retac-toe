@@ -1,0 +1,8 @@
+.message-box {
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.message-box.show {
+  opacity: 1;
+}

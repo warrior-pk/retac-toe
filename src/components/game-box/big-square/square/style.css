@@ -1,0 +1,16 @@
+.square {
+  height: 6rem;
+  width: 6rem;
+  font-size: 4rem;
+  background-color: white;
+  color: #282c34;
+  border: 0.2rem solid #282c34;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.win-line {
+  background: #1de9b6;
+  color: white;
+  scale: 1.2;
+}
