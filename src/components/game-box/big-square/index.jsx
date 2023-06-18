@@ -47,8 +47,6 @@ export default function BigSquare(props) {
         setWinner(win);
       } else {
         const containsNull = state.includes(null);
-        //TODO: assignClass
-        renderSquare(0, "win-line");
         if (!containsNull) setWinner("Tie");
       }
     }
