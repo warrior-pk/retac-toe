@@ -4,7 +4,7 @@ import BigSquare from "./big-square/index";
 import { useState } from "react";
 
 function GameBox() {
-  const [message, setMessage] = useState("Welcome to retac-toe!");
+  const [message, setMessage] = useState("Welcome to Retac-Toe!");
   const [gameStarted, setGameStarted] = useState(false);
   const handleMessage = (data) => {
     setMessage(data);
