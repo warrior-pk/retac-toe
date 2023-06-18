@@ -2,15 +2,21 @@
   height: 6rem;
   width: 6rem;
   font-size: 4rem;
-  background-color: white;
+  background-color: rgb(208, 211, 214);
   color: #282c34;
   border: 0.2rem solid #282c34;
   display: flex;
   justify-content: center;
   align-items: center;
+  user-select: none;
 }
 .win-line {
+  border: 0.2rem solid #1de9b6;
   background: #1de9b6;
   color: white;
-  scale: 1.2;
+  height: 6.1rem;
+  width: 6.1rem;
+}
+.other-line {
+  opacity: 0.6;
 }

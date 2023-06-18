@@ -1,5 +1,15 @@
 .row {
   display: flex;
+  justify-content: center;
+}
+.one {
+  align-items: flex-end;
+}
+.two {
+  align-items: center;
+}
+.three {
+  align-items: flex-start;
 }
 #start-btn {
   display: inline-block;

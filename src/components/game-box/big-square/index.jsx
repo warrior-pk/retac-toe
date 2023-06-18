@@ -6,6 +6,7 @@ export default function BigSquare(props) {
   const [state, setState] = useState(Array(9).fill(null));
   const [isXturn, setIsXturn] = useState(true);
   const [winner, setWinner] = useState(null);
+  const [winBox, setWinBox] = useState(Array(9).fill(false));
 
   function handleClick(i) {
     if (state[i] !== null || winner !== null) return;
@@ -31,47 +32,73 @@ export default function BigSquare(props) {
       for (let i = 0; i < winningLines.length; i++) {
         const [a, b, c] = winningLines[i];
         if (state[a] && state[a] === state[b] && state[a] === state[c]) {
+          const copyWinBox = [...winBox];
+          copyWinBox[a] = copyWinBox[b] = copyWinBox[c] = true;
+          setWinBox(copyWinBox);
           return state[a];
         }
       }
       return null;
     };
     if (state) {
-      console.log(state);
+      // console.log(state);
       const win = calculateWinner();
       if (win != null) {
         setWinner(win);
+      } else {
+        const containsNull = state.includes(null);
+        //TODO: assignClass
+        renderSquare(0, "win-line");
+        if (!containsNull) setWinner("Tie");
       }
     }
+    // eslint-disable-next-line
   }, [state]);
 
   useEffect(() => {
     // console.log("Winner:", winner);
-    props.handleMessage(`Winner is : ${winner}`);
+    if (winner === "Tie") props.handleMessage(`Match Tie!`);
+    else props.handleMessage(`Winner is : ${winner}`);
   }, [winner, props]);
 
   useEffect(() => {
     if (winner) return;
+
     props.handleMessage(`${isXturn ? "X" : "O"}'s Turn`);
     // eslint-disable-next-line
   }, [isXturn, props]);
 
+  function renderSquare(index) {
+    let gameOverClass = "";
+    if (winner) {
+      // console.log(winBox);
+      gameOverClass = winBox[index] ? "win-line" : "other-line";
+    }
+    return (
+      <Square
+        key={index}
+        onClick={() => handleClick(index)}
+        value={state[index]}
+        gameOverClass={gameOverClass}
+      />
+    );
+  }
   return (
     <div className="big-square">
-      <div className="row">
-        <Square onClick={() => handleClick(0)} value={state[0]} />
-        <Square onClick={() => handleClick(1)} value={state[1]} />
-        <Square onClick={() => handleClick(2)} value={state[2]} />
+      <div className="row one">
+        {renderSquare(0)}
+        {renderSquare(1)}
+        {renderSquare(2)}
       </div>
-      <div className="row">
-        <Square onClick={() => handleClick(3)} value={state[3]} />
-        <Square onClick={() => handleClick(4)} value={state[4]} />
-        <Square onClick={() => handleClick(5)} value={state[5]} />
+      <div className="row two">
+        {renderSquare(3)}
+        {renderSquare(4)}
+        {renderSquare(5)}
       </div>
-      <div className="row">
-        <Square onClick={() => handleClick(6)} value={state[6]} />
-        <Square onClick={() => handleClick(7)} value={state[7]} />
-        <Square onClick={() => handleClick(8)} value={state[8]} />
+      <div className="row three">
+        {renderSquare(6)}
+        {renderSquare(7)}
+        {renderSquare(8)}
       </div>
     </div>
   );
