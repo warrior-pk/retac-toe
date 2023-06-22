@@ -1,7 +1,7 @@
 import React from "react";
 import "./style.css";
 const HowToPlay = ({ showRules }) => {
-  console.log(showRules);
+  // console.log(showRules);
   return (
     showRules && (
       <div className="rule-box">

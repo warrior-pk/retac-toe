@@ -115,8 +115,8 @@ export default function BigSquare({ gameEnded, handleMessage }) {
   }, [state, handleGame]);
 
   useEffect(() => {
+    setState((state) => state.fill("")); // kept it on top for smooth transition
     const arr = Array(9).fill("dull");
-    setState((state) => state.fill(""));
     if (winner) {
       if (winner === "X") {
         arr[0] = arr[2] = arr[4] = arr[6] = arr[8] = "X-line";

@@ -6,10 +6,10 @@ import HowToPlay from "./how-to-play/index";
 import ReverseCounter from "../../utils/ReverseCounter";
 
 function GameBox() {
-  const [message, setMessage] = useState("Welcome To Retac-Toe!");
+  const [message, setMessage] = useState("Welcome To ");
   const [gameStarted, setGameStarted] = useState(false);
   const [gameEnded, setGameEnded] = useState(false);
-  const [counter, setCounter] = useState(60);
+  const [counter, setCounter] = useState(6);
   const [showBtn, setShowBtn] = useState(true);
   const [showRules, setShowRules] = useState(
     window.innerWidth < 600 ? true : false
@@ -47,7 +47,12 @@ function GameBox() {
     <div className="container">
       {gameStarted && !gameEnded && <ReverseCounter counter={counter} />}
       {message !== "" && (
-        <MessageBox message={message} show={"show"} gameEnded={gameEnded} />
+        <MessageBox
+          message={message}
+          show={"show"}
+          gameEnded={gameEnded}
+          gameStarted={gameStarted}
+        />
       )}
       {showBtn && (
         <button onClick={() => startGame()} id="start-btn">

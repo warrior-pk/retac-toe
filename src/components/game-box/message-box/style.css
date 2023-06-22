@@ -7,3 +7,19 @@
 .message-box.show {
   opacity: 1;
 }
+.beauty {
+  background: linear-gradient(
+    90deg,
+    hsl(165, 82%, 51%) 0%,
+    hsl(194, 82%, 51%) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (max-width: 600px) {
+  span {
+    white-space: nowrap;
+    overflow-wrap: break-word;
+  }
+}

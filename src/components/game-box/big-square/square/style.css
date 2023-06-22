@@ -28,3 +28,12 @@
 .tie {
   background-color: lightslategray;
 }
+
+.fade-transition {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.fade-transition.show {
+  opacity: 1;
+}
