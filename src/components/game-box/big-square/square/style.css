@@ -19,6 +19,12 @@
   background: hsl(194, 82%, 51%);
   color: white;
 }
-.other-line {
-  /* opacity: 0.6; */
+.dull {
+  opacity: 0.6;
+}
+.gold {
+  color: gold;
+}
+.tie {
+  background-color: lightslategray;
 }

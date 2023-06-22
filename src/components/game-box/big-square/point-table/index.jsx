@@ -1,8 +1,9 @@
 import React from "react";
 import "./style.css";
-const PointTable = ({ XPoint, OPoint, isXturn }) => {
+const PointTable = ({ XPoint, OPoint, isXturn, gameEnded }) => {
   let XBox = "";
   let OBox = "";
+  let pointBack = "";
   if (isXturn) {
     XBox = "X-Box";
     OBox = "";
@@ -10,7 +11,10 @@ const PointTable = ({ XPoint, OPoint, isXturn }) => {
     XBox = "";
     OBox = "O-Box";
   }
-
+  if (gameEnded) {
+    XBox = "X-Box";
+    OBox = "O-Box";
+  }
   return (
     <>
       <table className="table">
@@ -22,8 +26,8 @@ const PointTable = ({ XPoint, OPoint, isXturn }) => {
         </thead>
         <tbody className="table-body">
           <tr className="row">
-            <td className="cell point">{XPoint}</td>
-            <td className="cell point">{OPoint}</td>
+            <td className={`cell point ${pointBack}`}>{XPoint}</td>
+            <td className={`cell point ${pointBack}`}>{OPoint}</td>
           </tr>
         </tbody>
       </table>

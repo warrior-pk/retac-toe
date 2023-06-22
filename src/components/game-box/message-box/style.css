@@ -1,5 +1,6 @@
 .message-box {
   opacity: 0;
+  user-select: none;
   transition: opacity 1s ease-in-out;
 }
 

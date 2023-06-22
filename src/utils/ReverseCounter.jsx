@@ -16,7 +16,7 @@ export default function ReverseCounter({ counter }) {
 
   return (
     <div>
-      <h1 className={timerClass}>{`Time Left: ${counter}`}</h1>
+      <h1 className={timerClass}>{`${counter}`}</h1>
     </div>
   );
 }

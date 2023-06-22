@@ -3,8 +3,8 @@ import Square from "./square/index";
 import PointTable from "./point-table/index";
 import "./style.css";
 
-export default function BigSquare({ gameEnded }) {
-  const [state, setState] = useState(Array(9).fill(null));
+export default function BigSquare({ gameEnded, handleMessage }) {
+  const [state, setState] = useState(Array(9).fill(""));
   const [isXturn, setIsXturn] = useState(true);
   const [winner, setWinner] = useState(null);
   const [XPoint, setXpoint] = useState(0);
@@ -32,21 +32,42 @@ export default function BigSquare({ gameEnded }) {
     [2, 4, 6],
   ]);
   function renderSquares(colorClassArray) {
-    console.log(colorClassArray);
+    // console.log(colorClassArray);
     setCurrLine(colorClassArray);
   }
 
   const handleGame = useCallback(() => {
     const stateX = state.map((item) => item === "X");
     const stateO = state.map((item) => item === "O");
-    console.log(isXturn);
+    // console.log(isXturn);
+    const winLines = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
     if (!isXturn) {
       for (let i = 0; i < XWinLines.length; i++) {
         const [a, b, c] = XWinLines[i];
-        if (stateX[a] && stateX[a] === stateX[b] && stateX[a] === stateX[c]) {
-          const copyCurrLine = Array(9).fill("");
+        if (stateX[a] && stateX[b] && stateX[c]) {
+          const copyCurrLine = [...currLine];
           copyCurrLine[a] = copyCurrLine[b] = copyCurrLine[c] = "X-line";
-          // setCurrLine(copyCurrLine);
+          // for (let i = 0; i < winLines.length; i++) {
+          //   const [x, y, z] = winLines[i];
+          //   if (x === a && y === b && z === c) continue;
+          //   if (
+          //     copyCurrLine[x] === copyCurrLine[y] &&
+          //     copyCurrLine[y] === copyCurrLine[z]
+          //   ) {
+          //     continue;
+          //   } else {
+          //     copyCurrLine[x] = copyCurrLine[y] = copyCurrLine[z] = "";
+          //   }
+          // }
           const newArray = [
             ...XWinLines.slice(0, i),
             ...XWinLines.slice(i + 1),
@@ -54,17 +75,26 @@ export default function BigSquare({ gameEnded }) {
           setXpoint(XPoint + 3);
           setXWinLines(newArray);
           renderSquares(copyCurrLine);
-          return stateX[a];
         }
       }
     } else {
       for (let i = 0; i < OWinLines.length; i++) {
         const [a, b, c] = OWinLines[i];
-        if (stateO[a] && stateO[a] === stateO[b] && stateO[a] === stateO[c]) {
-          const copyCurrLine = Array(9).fill("");
-          copyCurrLine[a] = copyCurrLine[b] = copyCurrLine[c] = true;
+        if (stateO[a] && stateO[b] && stateO[c]) {
+          const copyCurrLine = [...currLine];
           copyCurrLine[a] = copyCurrLine[b] = copyCurrLine[c] = "O-line";
-          // setCurrLine(copyCurrLine);
+          // for (let i = 0; i < winLines.length; i++) {
+          //   const [x, y, z] = winLines[i];
+          //   if (x === a && y === b && z === c) continue;
+          //   if (
+          //     copyCurrLine[x] === copyCurrLine[y] &&
+          //     copyCurrLine[y] === copyCurrLine[z]
+          //   ) {
+          //     continue;
+          //   } else {
+          //     copyCurrLine[x] = copyCurrLine[y] = copyCurrLine[z] = "";
+          //   }
+          // }
           const newArray = [
             ...OWinLines.slice(0, i),
             ...OWinLines.slice(i + 1),
@@ -72,35 +102,66 @@ export default function BigSquare({ gameEnded }) {
           setOpoint(OPoint + 3);
           setOWinLines(newArray);
           renderSquares(copyCurrLine);
-          return stateO[a];
         }
       }
     }
-    return null;
-  }, [OPoint, OWinLines, XPoint, XWinLines, isXturn, state]);
+  }, [OPoint, OWinLines, XPoint, XWinLines, isXturn, state, currLine]);
 
   function handleClick(i) {
     setCurrTouch(i);
-    if (
-      gameEnded ||
-      (isXturn && state[i] === "X") ||
-      (!isXturn && state[i] === "O")
-    ) {
+
+    if (gameEnded) {
+      return;
+    }
+    if ((isXturn && state[i] === "X") || (!isXturn && state[i] === "O")) {
+      console.log("Only take other's position");
+      return;
+    }
+    if (state.includes("") && state[i] !== "") {
+      console.log("let the board be full");
       return;
     }
     const copyState = [...state];
+
     copyState[i] = isXturn ? "X" : "O";
     setState(copyState);
-    console.log("handleClick");
+    // console.log("handleClick");
     setIsXturn(!isXturn);
   }
 
   useEffect(() => {
     if (state) {
       // console.log(state);
-      const val = handleGame();
+      handleGame();
     }
   }, [state, handleGame]);
+
+  useEffect(() => {
+    const arr = Array(9).fill("dull");
+    setState((state) => state.fill(""));
+    if (winner) {
+      if (winner === "X") {
+        arr[0] = arr[2] = arr[4] = arr[6] = arr[8] = "X-line";
+      } else if (winner === "O") {
+        arr.fill("O-line");
+        arr[4] = "dull";
+      } else {
+        arr[0] = arr[1] = arr[2] = arr[4] = arr[7] = "tie";
+      }
+      renderSquares(arr);
+    }
+  }, [winner]);
+  useEffect(() => {
+    function calculateWinner() {
+      if (XPoint > OPoint) return "X";
+      else if (XPoint < OPoint) return "O";
+      else return "T";
+    }
+    if (gameEnded) {
+      setWinner(calculateWinner());
+      handleMessage(calculateWinner());
+    }
+  }, [gameEnded, XPoint, OPoint, handleMessage]);
 
   return (
     <>
@@ -170,7 +231,13 @@ export default function BigSquare({ gameEnded }) {
             className={"sq"}
           />
         </div>
-        <PointTable XPoint={XPoint} OPoint={OPoint} isXturn={isXturn} />
+        <PointTable
+          XPoint={XPoint}
+          OPoint={OPoint}
+          isXturn={isXturn}
+          gameEnded={gameEnded}
+          winner={winner}
+        />
       </div>
     </>
   );

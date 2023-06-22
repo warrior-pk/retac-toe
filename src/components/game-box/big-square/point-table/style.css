@@ -13,16 +13,21 @@
 }
 .table-head .X-Box {
   background: hsl(165, 82%, 51%);
-  color: white;
+  /* color: white; */
 }
 
 .table-head .O-Box {
   background: hsl(194, 82%, 51%);
-  color: white;
+  /* color: white; */
 }
-
+.gold {
+  color: gold;
+}
 .table-head .cell {
   font-size: 3rem;
+}
+.dull {
+  background: #d0d3d6;
 }
 .point {
   font-size: 5rem;
