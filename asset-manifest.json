@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/retac-toe/static/css/main.62eaba74.css",
+    "main.css": "/retac-toe/static/css/main.a535109e.css",
     "main.js": "/retac-toe/static/js/main.b6b1e067.js",
     "index.html": "/retac-toe/index.html",
-    "main.62eaba74.css.map": "/retac-toe/static/css/main.62eaba74.css.map",
+    "main.a535109e.css.map": "/retac-toe/static/css/main.a535109e.css.map",
     "main.b6b1e067.js.map": "/retac-toe/static/js/main.b6b1e067.js.map"
   },
   "entrypoints": [
-    "static/css/main.62eaba74.css",
+    "static/css/main.a535109e.css",
     "static/js/main.b6b1e067.js"
   ]
 }
