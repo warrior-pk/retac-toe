@@ -1,15 +1,13 @@
 {
   "files": {
-    "main.css": "/retac-toe/static/css/main.e2840c2a.css",
-    "main.js": "/retac-toe/static/js/main.58954bc6.js",
-    "static/js/787.393238a3.chunk.js": "/retac-toe/static/js/787.393238a3.chunk.js",
+    "main.css": "/retac-toe/static/css/main.0d869f20.css",
+    "main.js": "/retac-toe/static/js/main.c7eb0693.js",
     "index.html": "/retac-toe/index.html",
-    "main.e2840c2a.css.map": "/retac-toe/static/css/main.e2840c2a.css.map",
-    "main.58954bc6.js.map": "/retac-toe/static/js/main.58954bc6.js.map",
-    "787.393238a3.chunk.js.map": "/retac-toe/static/js/787.393238a3.chunk.js.map"
+    "main.0d869f20.css.map": "/retac-toe/static/css/main.0d869f20.css.map",
+    "main.c7eb0693.js.map": "/retac-toe/static/js/main.c7eb0693.js.map"
   },
   "entrypoints": [
-    "static/css/main.e2840c2a.css",
-    "static/js/main.58954bc6.js"
+    "static/css/main.0d869f20.css",
+    "static/js/main.c7eb0693.js"
   ]
 }
