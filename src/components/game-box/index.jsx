@@ -11,7 +11,9 @@ function GameBox() {
   const [gameEnded, setGameEnded] = useState(false);
   const [counter, setCounter] = useState(60);
   const [showBtn, setShowBtn] = useState(true);
-  const [showRules, setShowRules] = useState(false);
+  const [showRules, setShowRules] = useState(
+    window.innerWidth < 600 ? true : false
+  );
 
   useEffect(() => {
     function handleGameEnd() {
