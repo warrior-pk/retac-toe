@@ -1,7 +1,8 @@
+import { useState, useEffect } from "react";
 import "./style.css";
 import MessageBox from "./message-box/index";
 import BigSquare from "./big-square/index";
-import { useState, useEffect } from "react";
+import HowToPlay from "./how-to-play/index";
 import ReverseCounter from "../../utils/ReverseCounter";
 
 function GameBox() {
@@ -10,6 +11,7 @@ function GameBox() {
   const [gameEnded, setGameEnded] = useState(false);
   const [counter, setCounter] = useState(60);
   const [showBtn, setShowBtn] = useState(true);
+  const [showRules, setShowRules] = useState(false);
 
   useEffect(() => {
     function handleGameEnd() {
@@ -40,7 +42,7 @@ function GameBox() {
   }
 
   return (
-    <>
+    <div className="container">
       {gameStarted && !gameEnded && <ReverseCounter counter={counter} />}
       {message !== "" && (
         <MessageBox message={message} show={"show"} gameEnded={gameEnded} />
@@ -50,7 +52,7 @@ function GameBox() {
           Start Game
         </button>
       )}
-      <div className={`boxy ${gameStarted ? "show" : ""}`}>
+      <div className={`boxy ${gameStarted || gameEnded ? "show" : ""}`}>
         {gameStarted && (
           <BigSquare
             handleMessage={handleMessage}
@@ -60,7 +62,18 @@ function GameBox() {
           />
         )}
       </div>
-    </>
+      {!gameStarted && (
+        <>
+          <button
+            className="how-to-play-btn"
+            onClick={() => setShowRules(!showRules)}
+          >
+            - Game Rules -
+          </button>
+          <HowToPlay showRules={showRules} />
+        </>
+      )}
+    </div>
   );
 }
 

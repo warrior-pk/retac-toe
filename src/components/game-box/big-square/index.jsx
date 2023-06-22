@@ -56,18 +56,6 @@ export default function BigSquare({ gameEnded, handleMessage }) {
         if (stateX[a] && stateX[b] && stateX[c]) {
           const copyCurrLine = [...currLine];
           copyCurrLine[a] = copyCurrLine[b] = copyCurrLine[c] = "X-line";
-          // for (let i = 0; i < winLines.length; i++) {
-          //   const [x, y, z] = winLines[i];
-          //   if (x === a && y === b && z === c) continue;
-          //   if (
-          //     copyCurrLine[x] === copyCurrLine[y] &&
-          //     copyCurrLine[y] === copyCurrLine[z]
-          //   ) {
-          //     continue;
-          //   } else {
-          //     copyCurrLine[x] = copyCurrLine[y] = copyCurrLine[z] = "";
-          //   }
-          // }
           const newArray = [
             ...XWinLines.slice(0, i),
             ...XWinLines.slice(i + 1),
@@ -83,18 +71,7 @@ export default function BigSquare({ gameEnded, handleMessage }) {
         if (stateO[a] && stateO[b] && stateO[c]) {
           const copyCurrLine = [...currLine];
           copyCurrLine[a] = copyCurrLine[b] = copyCurrLine[c] = "O-line";
-          // for (let i = 0; i < winLines.length; i++) {
-          //   const [x, y, z] = winLines[i];
-          //   if (x === a && y === b && z === c) continue;
-          //   if (
-          //     copyCurrLine[x] === copyCurrLine[y] &&
-          //     copyCurrLine[y] === copyCurrLine[z]
-          //   ) {
-          //     continue;
-          //   } else {
-          //     copyCurrLine[x] = copyCurrLine[y] = copyCurrLine[z] = "";
-          //   }
-          // }
+
           const newArray = [
             ...OWinLines.slice(0, i),
             ...OWinLines.slice(i + 1),
@@ -104,6 +81,7 @@ export default function BigSquare({ gameEnded, handleMessage }) {
           renderSquares(copyCurrLine);
         }
       }
+      //TODO: hanlde colors correctly
     }
   }, [OPoint, OWinLines, XPoint, XWinLines, isXturn, state, currLine]);
 
@@ -151,6 +129,7 @@ export default function BigSquare({ gameEnded, handleMessage }) {
       renderSquares(arr);
     }
   }, [winner]);
+
   useEffect(() => {
     function calculateWinner() {
       if (XPoint > OPoint) return "X";
