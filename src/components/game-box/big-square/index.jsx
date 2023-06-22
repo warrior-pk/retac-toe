@@ -1,100 +1,177 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Square from "./square/index";
+import PointTable from "./point-table/index";
+import "./style.css";
 
-export default function BigSquare(props) {
-  // console.log(props);
+export default function BigSquare({ gameEnded }) {
   const [state, setState] = useState(Array(9).fill(null));
   const [isXturn, setIsXturn] = useState(true);
   const [winner, setWinner] = useState(null);
-  const [winBox, setWinBox] = useState(Array(9).fill(false));
-
-  function handleClick(i) {
-    if (state[i] !== null || winner !== null) return;
-
-    const copyState = [...state];
-    copyState[i] = isXturn ? "X" : "O";
-    setIsXturn(!isXturn);
-    setState(copyState);
+  const [XPoint, setXpoint] = useState(0);
+  const [OPoint, setOpoint] = useState(0);
+  const [currLine, setCurrLine] = useState(Array(9).fill(""));
+  const [currTouch, setCurrTouch] = useState(-1);
+  const [XWinLines, setXWinLines] = useState([
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ]);
+  const [OWinLines, setOWinLines] = useState([
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ]);
+  function renderSquares(colorClassArray) {
+    console.log(colorClassArray);
+    setCurrLine(colorClassArray);
   }
 
-  useEffect(() => {
-    const calculateWinner = () => {
-      const winningLines = [
-        [0, 1, 2], // 1st row
-        [3, 4, 5], // 2nd row
-        [6, 7, 8], // 3rd row
-        [0, 3, 6], // 1st column
-        [1, 4, 7], // 2nd column
-        [2, 5, 8], // 3rd column
-        [0, 4, 8], // 1st diagonal
-        [2, 4, 6], // 2nd diagonal
-      ];
-      for (let i = 0; i < winningLines.length; i++) {
-        const [a, b, c] = winningLines[i];
-        if (state[a] && state[a] === state[b] && state[a] === state[c]) {
-          const copyWinBox = [...winBox];
-          copyWinBox[a] = copyWinBox[b] = copyWinBox[c] = true;
-          setWinBox(copyWinBox);
-          return state[a];
+  const handleGame = useCallback(() => {
+    const stateX = state.map((item) => item === "X");
+    const stateO = state.map((item) => item === "O");
+    console.log(isXturn);
+    if (!isXturn) {
+      for (let i = 0; i < XWinLines.length; i++) {
+        const [a, b, c] = XWinLines[i];
+        if (stateX[a] && stateX[a] === stateX[b] && stateX[a] === stateX[c]) {
+          const copyCurrLine = Array(9).fill("");
+          copyCurrLine[a] = copyCurrLine[b] = copyCurrLine[c] = "X-line";
+          // setCurrLine(copyCurrLine);
+          const newArray = [
+            ...XWinLines.slice(0, i),
+            ...XWinLines.slice(i + 1),
+          ];
+          setXpoint(XPoint + 3);
+          setXWinLines(newArray);
+          renderSquares(copyCurrLine);
+          return stateX[a];
         }
       }
-      return null;
-    };
-    if (state) {
-      // console.log(state);
-      const win = calculateWinner();
-      if (win != null) {
-        setWinner(win);
-      } else {
-        const containsNull = state.includes(null);
-        if (!containsNull) setWinner("Tie");
+    } else {
+      for (let i = 0; i < OWinLines.length; i++) {
+        const [a, b, c] = OWinLines[i];
+        if (stateO[a] && stateO[a] === stateO[b] && stateO[a] === stateO[c]) {
+          const copyCurrLine = Array(9).fill("");
+          copyCurrLine[a] = copyCurrLine[b] = copyCurrLine[c] = true;
+          copyCurrLine[a] = copyCurrLine[b] = copyCurrLine[c] = "O-line";
+          // setCurrLine(copyCurrLine);
+          const newArray = [
+            ...OWinLines.slice(0, i),
+            ...OWinLines.slice(i + 1),
+          ];
+          setOpoint(OPoint + 3);
+          setOWinLines(newArray);
+          renderSquares(copyCurrLine);
+          return stateO[a];
+        }
       }
     }
-    // eslint-disable-next-line
-  }, [state]);
+    return null;
+  }, [OPoint, OWinLines, XPoint, XWinLines, isXturn, state]);
 
-  useEffect(() => {
-    // console.log("Winner:", winner);
-    if (winner === "Tie") props.handleMessage(`Match Tie!`);
-    else props.handleMessage(`Winner is : ${winner}`);
-  }, [winner, props]);
-
-  useEffect(() => {
-    if (winner) return;
-
-    props.handleMessage(`${isXturn ? "X" : "O"}'s Turn`);
-    // eslint-disable-next-line
-  }, [isXturn, props]);
-
-  function renderSquare(index) {
-    let gameOverClass = "";
-    if (winner) {
-      // console.log(winBox);
-      gameOverClass = winBox[index] ? "win-line" : "other-line";
+  function handleClick(i) {
+    setCurrTouch(i);
+    if (
+      gameEnded ||
+      (isXturn && state[i] === "X") ||
+      (!isXturn && state[i] === "O")
+    ) {
+      return;
     }
-    return (
-      <Square
-        key={index}
-        onClick={() => handleClick(index)}
-        value={state[index]}
-        gameOverClass={gameOverClass}
-        className={"sq"}
-      />
-    );
+    const copyState = [...state];
+    copyState[i] = isXturn ? "X" : "O";
+    setState(copyState);
+    console.log("handleClick");
+    setIsXturn(!isXturn);
   }
+
+  useEffect(() => {
+    if (state) {
+      // console.log(state);
+      const val = handleGame();
+    }
+  }, [state, handleGame]);
+
   return (
-    <div className="container">
-      <div className="big-square">
-        {renderSquare(0)}
-        {renderSquare(1)}
-        {renderSquare(2)}
-        {renderSquare(3)}
-        {renderSquare(4)}
-        {renderSquare(5)}
-        {renderSquare(6)}
-        {renderSquare(7)}
-        {renderSquare(8)}
+    <>
+      <div className="ver-container">
+        <div className="big-square">
+          <Square
+            key={0}
+            onClick={() => handleClick(0)}
+            value={state[0]}
+            lineClass={currLine[0]}
+            className={"sq"}
+          />
+          <Square
+            key={1}
+            onClick={() => handleClick(1)}
+            value={state[1]}
+            lineClass={currLine[1]}
+            className={"sq"}
+          />
+          <Square
+            key={2}
+            onClick={() => handleClick(2)}
+            value={state[2]}
+            lineClass={currLine[2]}
+            className={"sq"}
+          />
+          <Square
+            key={3}
+            onClick={() => handleClick(3)}
+            value={state[3]}
+            lineClass={currLine[3]}
+            className={"sq"}
+          />
+          <Square
+            key={4}
+            onClick={() => handleClick(4)}
+            value={state[4]}
+            lineClass={currLine[4]}
+            className={"sq"}
+          />
+          <Square
+            key={5}
+            onClick={() => handleClick(5)}
+            value={state[5]}
+            lineClass={currLine[5]}
+            className={"sq"}
+          />
+          <Square
+            key={6}
+            onClick={() => handleClick(6)}
+            value={state[6]}
+            lineClass={currLine[6]}
+            className={"sq"}
+          />
+          <Square
+            key={7}
+            onClick={() => handleClick(7)}
+            value={state[7]}
+            lineClass={currLine[7]}
+            className={"sq"}
+          />
+          <Square
+            key={8}
+            onClick={() => handleClick(8)}
+            value={state[8]}
+            lineClass={currLine[8]}
+            className={"sq"}
+          />
+        </div>
+        <PointTable XPoint={XPoint} OPoint={OPoint} isXturn={isXturn} />
       </div>
-    </div>
+    </>
   );
 }

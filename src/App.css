@@ -21,3 +21,9 @@
 .App-link {
   color: #61dafb;
 }
+@media only screen and (max-width: 768px) {
+  .App-header {
+    margin-top: 5rem;
+    justify-content: flex-start;
+  }
+}

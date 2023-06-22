@@ -1,8 +1,8 @@
 import "./style.css";
-export default function Square(props) {
+export default function Square({ value, onClick, lineClass }) {
   return (
-    <div onClick={props.onClick} className={`square ${props.gameOverClass}`}>
-      {props.value}
+    <div onClick={onClick} className={`square ${lineClass}`}>
+      {value}
     </div>
   );
 }
