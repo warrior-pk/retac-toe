@@ -9,7 +9,7 @@ function GameBox() {
   const [message, setMessage] = useState("Welcome To ");
   const [gameStarted, setGameStarted] = useState(false);
   const [gameEnded, setGameEnded] = useState(false);
-  const [counter, setCounter] = useState(6);
+  const [counter, setCounter] = useState(60);
   const [showBtn, setShowBtn] = useState(true);
   const [showRules, setShowRules] = useState(
     window.innerWidth < 600 ? true : false
